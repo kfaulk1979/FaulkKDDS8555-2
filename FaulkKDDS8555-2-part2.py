@@ -171,4 +171,4 @@ submission_poly = pd.DataFrame({
 })
 
 submission_poly.to_csv("FaulkKDDS8555-2_polynomial.csv", index=False)
-print("✅ Polynomial submission file 'submission_polynomial.csv' created!")
+print("Polynomial submission file 'submission_polynomial.csv' created!")
