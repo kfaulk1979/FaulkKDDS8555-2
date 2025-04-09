@@ -58,6 +58,24 @@ X_test_scaled = scaler.transform(test_data)
 lr= LinearRegression()
 lr.fit(X_train_scaled, y_train)
 
+# Get feature names (after dropping)
+features = X.columns
+
+# Coefficients
+coefficients = lr.coef_
+
+# Combine into DataFrame
+coef_df = pd.DataFrame({
+    'Feature': features,
+    'Coefficient': coefficients
+})
+
+# Sort by absolute value (optional, to show most important)
+coef_df['AbsCoeff'] = coef_df['Coefficient'].abs()
+coef_df = coef_df.sort_values(by='AbsCoeff', ascending=False)
+
+print(coef_df[['Feature', 'Coefficient']])
+
 # Predict & Evaluate
 y_pred_val = lr.predict(X_val_scaled)
 print("Linear RMSE:", np.sqrt(mean_squared_error(y_val, y_pred_val)))
@@ -115,6 +133,25 @@ X_val_scaled = scaler.transform(X_val)
 lr = LinearRegression()
 lr.fit(X_train_scaled, y_train)
 
+# Get feature names (after dropping)
+features = X.columns
+
+# Coefficients
+coefficients = lr.coef_
+
+# Combine into DataFrame
+coef_df = pd.DataFrame({
+    'Feature': features,
+    'Coefficient': coefficients
+})
+
+# Sort by absolute value (optional, to show most important)
+coef_df['AbsCoeff'] = coef_df['Coefficient'].abs()
+coef_df = coef_df.sort_values(by='AbsCoeff', ascending=False)
+
+print(coef_df[['Feature', 'Coefficient']])
+
+
 # Evaluate
 y_pred_val = lr.predict(X_val_scaled)
 print("New Linear RMSE:", np.sqrt(mean_squared_error(y_val, y_pred_val)))
@@ -146,6 +183,15 @@ X_poly_val = poly.transform(X_val_scaled)
 poly_model = LinearRegression()
 poly_model.fit(X_poly_train, y_train)
 
+poly_features = poly.get_feature_names_out(X.columns)
+poly_coefs = poly_model.coef_
+
+poly_df = pd.DataFrame({
+    'Feature': poly_features,
+    'Coefficient': poly_coefs
+}).sort_values(by='Coefficient', key=abs, ascending=False)
+
+print(poly_df.head(10))  # Top 10 features
 
 y_poly_pred_val = poly_model.predict(X_poly_val)
 rmse_poly = np.sqrt(mean_squared_error(y_val, y_poly_pred_val))
